@@ -1,18 +1,18 @@
 import { Hono } from "hono";
-const routes = new Hono()
-routes.post('/api/v1/sigup',(c)=>{
+const router = new Hono()
+router.post('/api/v1/sigup',(c)=>{
     return c.text('Hello')
 })
-routes.post('/api/v1/sigin',(c)=>{
+router.post('/api/v1/sigin',(c)=>{
     return c.text('Hello')
 })
-routes.post('/api/v1/blog',(c)=>{
+router.post('/api/v1/blog',(c)=>{
     return c.text('Hello')
 })
-routes.put('/api/v1/blog',(c)=>{
+router.put('/api/v1/blog',(c)=>{
     return c.text('Hello')
 })
-routes.post('/api/v1/blog/:id',(c)=>{
+router.post('/api/v1/blog/:id',(c)=>{
     return c.text('Hello')
 })
-export default routes;
+export default router;
