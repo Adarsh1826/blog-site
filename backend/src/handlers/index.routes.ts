@@ -27,7 +27,13 @@ router.post('/api/v1/signup',async (c)=>{
       //console.log(c.env.DATABASE_URL);
       
       const body = await c.req.json()
+      console.log(body);
+      
       const{email,name,password} = body
+      console.log("JWT Secret:", c.env.JWT_SEC);
+      if (!c.env.JWT_SEC) {
+        return c.json({ msg: "JWT Secret is missing" }, 500);
+      }
       const isOk = await prisma.user.findUnique({
         where:{
             email:email
