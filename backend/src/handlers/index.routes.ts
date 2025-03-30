@@ -20,20 +20,11 @@ router.use('api/v1/blog/*',async(c,next)=>{
 }
 })
 router.post('/api/v1/signup',async (c)=>{
-   
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL
       }).$extends(withAccelerate());
-      //console.log(c.env.DATABASE_URL);
-      
       const body = await c.req.json()
-      //console.log(body);
-      
       const{email,name,password} = body
-      // console.log("JWT Secret:", c.env.JWT_SEC);
-      // if (!c.env.JWT_SEC) {
-      //   return c.json({ msg: "JWT Secret is missing" }, 500);
-      // }
       const isOk = await prisma.user.findUnique({
         where:{
             email:email
@@ -44,8 +35,6 @@ router.post('/api/v1/signup',async (c)=>{
             "msg":"Already registered"
         })
       }
-      
-      
       const user =await prisma.user.create({
         data: {
           email: email,
@@ -58,8 +47,7 @@ router.post('/api/v1/signup',async (c)=>{
       return c.json({
         "msg":"Registered Successfully",
         jwt:token
-      })
-      
+      })  
 })
 router.post('/api/v1/sigin',async (c)=>{
   const prisma = new PrismaClient()
@@ -80,8 +68,6 @@ router.post('/api/v1/sigin',async (c)=>{
   return c.json({
     token
   })
-
-   
 })
 router.post('/api/v1/blog',(c)=>{
     return c.text('Hello')
