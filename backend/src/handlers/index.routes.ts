@@ -43,14 +43,15 @@ router.post('/api/v1/signup',async (c)=>{
         },
       })
       const token = await sign({id:user.id},c.env.JWT_SEC)
-      console.log(token);
       return c.json({
         "msg":"Registered Successfully",
-        jwt:token
+        token
       })  
 })
 router.post('/api/v1/sigin',async (c)=>{
-  const prisma = new PrismaClient()
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL
+  }).$extends(withAccelerate());
   const body = await c.req.json()
   const{email,password} = body;
   const user = await prisma.user.findUnique({
@@ -60,6 +61,7 @@ router.post('/api/v1/sigin',async (c)=>{
     }
   })
   if(!user){
+    c.status(403)
     return c.json({
       "msg":"Register first"
     })
