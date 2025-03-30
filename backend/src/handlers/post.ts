@@ -2,13 +2,13 @@ import { Hono } from "hono";
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import{decode,sign,verify} from "hono/jwt"
-const router = new Hono<{
+export const postRoute = new Hono<{
     Bindings:{
         DATABASE_URL:string,
         JWT_SEC:string
     }
 }>()
-router.use('api/v1/blog/*',async(c,next)=>{
+postRoute.use('api/v1/blog/*',async(c,next)=>{
   const header = c.req.header("authhorization") || ""
   const res =  await verify(header,c.env.JWT_SEC)
   if(res.id){
@@ -20,16 +20,15 @@ router.use('api/v1/blog/*',async(c,next)=>{
 }
 })
 
-router.post('/api/v1/blog',(c)=>{
+postRoute.post('/api/v1/blog',(c)=>{
     return c.text('Hello')
 })
-router.put('/api/v1/blog',(c)=>{
+postRoute.put('/api/v1/blog',(c)=>{
     return c.text('Hello')
 })
-router.post('/api/v1/blog/:id',(c)=>{
+postRoute.post('/api/v1/blog/:id',(c)=>{
     return c.text('Hello')
 })
-router.get('/',(c)=>{
+postRoute.get('/',(c)=>{
     return c.text('Hello ji')
 })
-export default router;
