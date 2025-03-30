@@ -6,12 +6,17 @@ export const postRoute = new Hono<{
     Bindings:{
         DATABASE_URL:string,
         JWT_SEC:string
+        
+    },
+    Variables:{
+        userId:string;
     }
 }>()
-postRoute.use('api/v1/blog/*',async(c,next)=>{
-  const header = c.req.header("authhorization") || ""
-  const res =  await verify(header,c.env.JWT_SEC)
+postRoute.use('/*',async(c,next)=>{
+  const token = c.req.header("Authorization") || ""
+  const res =  await verify(token,c.env.JWT_SEC)
   if(res.id){
+    c.set("userId", res.id as string)
     await next()
   }
   else {return c.json({
@@ -19,16 +24,54 @@ postRoute.use('api/v1/blog/*',async(c,next)=>{
   })
 }
 })
+postRoute.post('/',async(c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+      }).$extends(withAccelerate());
+      const body = await c.req.json()
+      const userId = await c.get("userId")
+      const {title,content}=body;
+      const post = await prisma.post.create({
+        data:{
+            title,
+            content,
+            authorId:userId
+        }
+      })
+      return c.json({
+        id:post.id
+      })
+    
+})
+postRoute.get('/',async (c)=>{
 
-postRoute.post('/api/v1/blog',(c)=>{
-    return c.text('Hello')
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+      }).$extends(withAccelerate());
+    //const postId = c.req.query("id");  
+    const body = await c.req.json()
+    try {
+        const post = await prisma.post.findFirst({
+            where:{
+                id:body.id
+            },
+        })
+        return c.json({
+            post
+        })
+    } catch (error) {
+        return c.json({
+            "msg":"create first post"
+        })
+    }
 })
-postRoute.put('/api/v1/blog',(c)=>{
-    return c.text('Hello')
-})
-postRoute.post('/api/v1/blog/:id',(c)=>{
-    return c.text('Hello')
-})
-postRoute.get('/',(c)=>{
-    return c.text('Hello ji')
+postRoute.get('/bulk',async(c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL
+      }).$extends(withAccelerate());
+      const posts = await prisma.post.findMany()
+      return c.json({
+        posts,
+      })
+
 })
