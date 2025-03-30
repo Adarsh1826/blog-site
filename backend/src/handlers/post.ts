@@ -12,35 +12,44 @@ export const postRoute = new Hono<{
         userId:string;
     }
 }>()
-postRoute.use('/*',async(c,next)=>{
-  const token = c.req.header("Authorization") || ""
-  const res =  await verify(token,c.env.JWT_SEC)
-  if(res.id){
-    c.set("userId", res.id as string)
-    await next()
-  }
-  else {return c.json({
-    "msg":"Unauthorized access",
-  })
-}
-})
-postRoute.post('/',async(c)=>{
+postRoute.use('/*', async (c, next) => {
+    try {
+      const authHeader = c.req.header("Authorization") || "";
+      const res = await verify(authHeader, c.env.JWT_SEC);
+      if (res?.id) {
+        c.set("userId", res.id as string);
+        await next();
+      } else {
+        return c.json({ "msg": "Unauthorized: Invalid Token" }, 401);
+      }
+    } catch (error) {
+     console.log(error);
+     
+    }
+  });
+
+postRoute.post('/create',async(c)=>{
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL
       }).$extends(withAccelerate());
       const body = await c.req.json()
-      const userId = await c.get("userId")
-      const {title,content}=body;
-      const post = await prisma.post.create({
-        data:{
-            title,
-            content,
-            authorId:userId
-        }
-      })
-      return c.json({
-        id:post.id
-      })
+      try {
+        const userId = await c.get("userId")
+        const {title,content}=body;
+        const post = await prisma.post.create({
+          data:{
+              title,
+              content,
+              authorId:userId
+          }
+        })
+        return c.json({
+          id:post.id
+        })
+      } catch (error) {
+        console.log(error);
+        
+      }
     
 })
 postRoute.get('/',async (c)=>{
