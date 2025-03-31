@@ -52,35 +52,54 @@ postRoute.post('/create',async(c)=>{
       }
     
 })
-postRoute.get('/',async (c)=>{
-
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL
-      }).$extends(withAccelerate());
-    //const postId = c.req.query("id");  
-    const body = await c.req.json()
-    try {
-        const post = await prisma.post.findFirst({
-            where:{
-                id:body.id
-            },
-        })
-        return c.json({
-            post
-        })
-    } catch (error) {
-        return c.json({
-            "msg":"create first post"
-        })
+postRoute.put('/update',async(c)=>{
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL
+  }).$extends(withAccelerate());
+  //const id = await c.req.param("id")
+  const body = await c.req.json()
+  const {title,content} = body;
+  const post = await prisma.post.update({
+    where:{
+      id:body.id
+    },
+    data:{
+      title,
+      content
     }
+  })
+  return c.json({
+    post
+  })
 })
 postRoute.get('/bulk',async(c)=>{
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL
-      }).$extends(withAccelerate());
-      const posts = await prisma.post.findMany()
-      return c.json({
-        posts,
-      })
+  const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL
+    }).$extends(withAccelerate());
+    const posts = await prisma.post.findMany()
+    return c.json({
+      posts,
+    })
 
+})
+postRoute.get("/:id", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL
+  }).$extends(withAccelerate());
+  try {
+    const postId = c.req.param("id");  
+
+    const post = await prisma.post.findFirst({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      return c.json({ msg: "Post not found" }, 404);
+    }
+
+    return c.json({ post });
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return c.json({ msg: "Something went wrong" }, 500);
+  }
 })
