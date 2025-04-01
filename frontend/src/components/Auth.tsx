@@ -22,7 +22,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       );
       //alert(res.data.token);
       localStorage.setItem("token", res.data.token);
-      navigate("/");
+      navigate("/blogs");
     } catch (error) {
       console.error(error);
     }
