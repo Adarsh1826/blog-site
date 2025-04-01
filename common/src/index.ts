@@ -11,7 +11,7 @@ export const blogInput = z.object({
 })
 export const signinInput = z.object({
     email:z.string().email(),
-    password:z.string().min(4).max(20)
+    password:z.string()
 })
 export const updateblogInput = z.object({
     id:z.string(),
