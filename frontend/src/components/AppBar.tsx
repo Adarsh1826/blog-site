@@ -51,7 +51,7 @@ export const AppBar = () => {
           
         >
           Publish
-    </button></Link>:null
+    </button></Link>:<div></div>
     
       }
       </div>
@@ -60,7 +60,7 @@ export const AppBar = () => {
         <div>
           <Avatar name={name} />
         </div>
-      ) : null}
+      ) : <div></div>}
       </div>
       </div>
     </div>

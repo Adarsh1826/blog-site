@@ -1,6 +1,5 @@
 import { mainBlog } from "../hooks";
 import { useParams } from "react-router-dom";
-import { AppBar } from "./AppBar";
 
 export const FullBlog = () => {
     const { id } = useParams();
