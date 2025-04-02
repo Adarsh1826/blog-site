@@ -14,6 +14,7 @@ export const useBlog = () => {
                         Authorization: `${token}`,
                     },
                 });
+               //console.log(res);
                
                 
                 if (res.data && res.data.posts) {

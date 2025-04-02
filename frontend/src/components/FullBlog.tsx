@@ -1,5 +1,6 @@
 import { mainBlog } from "../hooks";
 import { useParams } from "react-router-dom";
+import { AppBar } from "./AppBar";
 
 export const FullBlog = () => {
     const { id } = useParams();
@@ -24,6 +25,7 @@ export const FullBlog = () => {
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
+           
         );
     }
 
@@ -31,7 +33,7 @@ export const FullBlog = () => {
         <div className="min-h-screen bg-gray-50 text-gray-800">
             <div className="pt-16 pb-10 px-6 md:px-20 lg:px-40">
                 <h1 className="text-4xl font-bold text-gray-900 mb-6">{post.title}</h1>
-                <p className="text-lg leading-relaxed">{post.content}</p>
+                <p className="text-lg leading-relaxed">{post.content }</p>
             </div>
         </div>
     );
