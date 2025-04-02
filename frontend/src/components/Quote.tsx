@@ -8,10 +8,10 @@ export const Quote = () => {
                         and beyond to address my concerns
                     </div>
                     <div className="max-w-md text-xl font-semibold mt-4">
-                        Julies Winfield
+                        Adarsh
                     </div>
                     <div className="max-w-md text-md font-light mt-2">
-                        CEO | Acme
+                        CEO | Bridge
                     </div>
                 </div>
             </div>
