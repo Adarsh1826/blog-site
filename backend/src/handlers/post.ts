@@ -47,7 +47,8 @@ postRoute.post('/create',async(c)=>{
           data:{
               title,
               content,
-              authorId:userId
+              authorId:userId,
+              published:true
           }
         })
         return c.json({
