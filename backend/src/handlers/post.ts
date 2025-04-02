@@ -95,6 +95,20 @@ postRoute.get('/bulk',async(c)=>{
     })
 
 })
+postRoute.get('/name',async(c)=>{
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL
+  }).$extends(withAccelerate());
+  const token = c.get("userId")
+  const us = await prisma.user.findFirst({
+    where:{
+      id:token
+    }
+  })
+  return c.json({
+    us,
+  })
+})
 postRoute.get("/:id", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL
