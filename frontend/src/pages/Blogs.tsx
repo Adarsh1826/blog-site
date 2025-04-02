@@ -34,7 +34,7 @@ export const Blogs = () => {
         <div className="flex flex-col space-y-10">
           {
             post.map(p=><BlogCard 
-              authorName={p.id}
+              authorName={p.id }
               title={p.title}
               content={p.content}
 
