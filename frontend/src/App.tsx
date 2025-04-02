@@ -1,4 +1,4 @@
-import{BrowserRouter,Routes,Route} from "react-router-dom"
+import{Routes,Route} from "react-router-dom"
 import { Post } from "./pages/Post"
 import { Signin } from "./pages/Signin"
 import { Signup } from "./pages/Signup"
@@ -9,7 +9,7 @@ function App() {
   return (
     <>
     
-     <BrowserRouter>
+     
      <AppBar/>
       <Routes>
         <Route path="/post/:id" element={<Post />}></Route>
@@ -18,7 +18,7 @@ function App() {
         <Route path="/blogs" element={<Blogs />}></Route>
         <Route path="/publish" element={<PublishPost />}></Route>
      </Routes>
-     </BrowserRouter>
+     
     </>
   )
 }
