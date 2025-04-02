@@ -1,6 +1,9 @@
 import { mainBlog } from "../hooks";
 import { useParams } from "react-router-dom";
-
+interface BlogPost {
+    title: string;
+    content: string;
+}
 export const FullBlog = () => {
     const { id } = useParams();
     const { post, loading } = mainBlog({
@@ -31,8 +34,8 @@ export const FullBlog = () => {
     return (
         <div className="min-h-screen bg-gray-50 text-gray-800">
             <div className="pt-16 pb-10 px-6 md:px-20 lg:px-40">
-                <h1 className="text-4xl font-bold text-gray-900 mb-6">{post.title}</h1>
-                <p className="text-lg leading-relaxed">{post.content }</p>
+                <h1 className="text-4xl font-bold text-gray-900 mb-6">{(post as BlogPost)?.title || "Untitled"}</h1>
+                <p className="text-lg leading-relaxed">{(post as BlogPost)?.content || "No content available"}</p>
             </div>
         </div>
     );

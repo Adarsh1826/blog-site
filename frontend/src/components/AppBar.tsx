@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const AppBar = () => {
   const [name, setName] = useState("");
-  const [tok, setTok] = useState(localStorage.getItem("token") || ""); // Ensure it's not null
+  const [tok, setTok] = useState<string>(localStorage.getItem("token") || ""); // Ensure it's not null
 
   const fetchData = async () => {
     if (!tok) return;
@@ -25,7 +25,7 @@ export const AppBar = () => {
 
   useEffect(() => {
     const handleTokenUpdate = () => {
-      const newToken = localStorage.getItem("token");
+      const newToken = localStorage.getItem("token")??"";
       if (newToken !== tok) {
         setTok(newToken);
       }
