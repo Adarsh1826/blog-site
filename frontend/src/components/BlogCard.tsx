@@ -1,19 +1,24 @@
+import { Link } from "react-router-dom"
 interface BlogCardsProps{
     authorName:string,
     title:string,
     content:string
+    id:string
 }
 export const BlogCard = ({
     authorName,
     title,
-    content
+    content,
+    id
 }:BlogCardsProps) => {
   return (
+    <Link to={`/post/${id}`}>
     <div className="border-b pb-4 mb-4 space-y-2">
         <Avatar authorName={authorName}/>
         <div className="text-bold font-bold">{title}</div>
         <div className="font-extralight">{content.slice(0,100)}</div>
     </div>
+    </Link>
   )
 }
 export function Avatar({ authorName }: { authorName: string }) {

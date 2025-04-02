@@ -1,5 +1,9 @@
+import { FullBlog } from "../components/FullBlog"
+
 export const Post = () => {
   return (
-    <div>Post</div>
+    <div>
+      <FullBlog />
+    </div>
   )
 }
